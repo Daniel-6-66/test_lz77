@@ -2,15 +2,32 @@ package org.example;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите путь к входному файлу: ");
+        String input = scanner.nextLine();
+
+
+        System.out.print("Введите путь к файлу в который хотите записать сжатый файл : ");
+        String archive = scanner.nextLine();
+
+
+        System.out.print("Введите путь к выходному файлу: ");
+        String output = scanner.nextLine();
+
+
         LZ77 lz77 = new LZ77();
+
 
         // Чтение данных из input.txt
         StringBuilder inputData = new StringBuilder();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\BoSS JR\\OneDrive\\Рабочий стол\\Учёба\\LZ77_algoritm\\src\\input.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(input));
             String line;
             while ((line = reader.readLine()) != null) {
                 inputData.append(line);
@@ -28,7 +45,7 @@ public class Main {
         // Преобразование сжатых данных в байты и запись в архивный файл
         try {
             byte[] compressedBytes = lz77.convertToBytes(compressedData);
-            FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\BoSS JR\\OneDrive\\Рабочий стол\\Учёба\\LZ77_algoritm\\src\\archive.txt");
+            FileOutputStream fileOutputStream = new FileOutputStream(archive);
             fileOutputStream.write(compressedBytes);
             fileOutputStream.close();
         } catch (IOException e) {
@@ -37,7 +54,7 @@ public class Main {
 
         // Чтение сжатых данных из архивного файла
         try {
-            FileInputStream fileInputStream = new FileInputStream("C:\\Users\\BoSS JR\\OneDrive\\Рабочий стол\\Учёба\\LZ77_algoritm\\src\\archive.txt");
+            FileInputStream fileInputStream = new FileInputStream(archive);
             byte[] readBytes = new byte[fileInputStream.available()];
             fileInputStream.read(readBytes);
             fileInputStream.close();
@@ -47,7 +64,7 @@ public class Main {
             String decompressedData = lz77.decompress(readCompressedData);
 
             // Запись распакованных данных в output.txt
-            BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\BoSS JR\\OneDrive\\Рабочий стол\\Учёба\\LZ77_algoritm\\src\\output.txt"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(output));
             writer.write(decompressedData);
             writer.close();
         } catch (Exception e){
